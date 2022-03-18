@@ -1,5 +1,7 @@
 import Phaser from 'phaser';
 import logoImg from './assets/logo.png';
+import wizardImg from './assets/wizard.png';
+import wizardJson from './assets/wizard.json';
 
 class MyGame extends Phaser.Scene
 {
@@ -11,6 +13,7 @@ class MyGame extends Phaser.Scene
     preload ()
     {
         this.load.image('logo', logoImg);
+        this.load.atlas('wizard', wizardImg, wizardJson);
     }
       
     create ()
@@ -25,6 +28,14 @@ class MyGame extends Phaser.Scene
             yoyo: true,
             loop: -1
         });
+        this.anims.create({
+            key: 'idle',
+            frames: this.anims.generateFrameNames('wizard', { prefix: 'idle00', start: 0, end: 5, suffix: '.png'}),
+            frameRate: 8,
+            repeat: -1
+        });
+        var wizard = this.add.sprite(100, 100);
+        wizard.play('idle')
     }
 }
 
