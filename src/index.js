@@ -5,6 +5,9 @@ import wizardJson from './assets/wizard.json';
 import bgImg from './assets/background_layer_3.png';
 import paintingImg from './assets/painting-dark-blue.jpg';
 import skyImg from './assets/dark-sky-game.png';
+import oakwoodImg from './assets/oakwood.png'
+import gameJson from './assets/game.json';
+// import gameTmx from './assets/game.tmx';
 
 class MyGame extends Phaser.Scene
 {
@@ -19,7 +22,10 @@ class MyGame extends Phaser.Scene
         this.load.atlas('wizard', wizardImg, wizardJson);
         this.load.image('trees', bgImg);
         this.load.image('painting', paintingImg);
-        this.load.image('sky', skyImg)
+        this.load.image('sky', skyImg);
+        this.load.image('oakwood', oakwoodImg);
+        // this.load.tilemapTiledJSON('tilemap', 'assets/game.json')
+        // this.load.tilemapImpact('tilemap', gameTmx)
     }
     
     create ()
@@ -34,8 +40,13 @@ class MyGame extends Phaser.Scene
 
         // let background = this.add.image(400, 16, 'bg').setOrigin(0, 0);
         // let paintingBackground = this.add.image(0, 0, 'painting').setOrigin(0, 0);
-        this.bg = this.add.tileSprite(0, 0, 800, 800, 'sky').setOrigin(0, 0);
-        this.trees = this.add.tileSprite(0, 0, 800, 180, 'trees').setOrigin(0, 0);
+        // this.bg = this.add.tileSprite(0, 0, 800, 800, 'sky').setOrigin(0, 0);
+        // this.trees = this.add.tileSprite(0, 0, 800, 180, 'trees').setOrigin(0, 0);
+        
+        
+        // const map = this.make.tilemap({key: 'tilemap'})
+        // map.addTilesetImage('oakwood', 'oakwood')
+
         this.anims.create({
             key: 'idle',
             frames: this.anims.generateFrameNames('wizard', { prefix: 'idle00', start: 0, end: 5, suffix: '.png'}),
@@ -54,7 +65,7 @@ class MyGame extends Phaser.Scene
 const config = {
     type: Phaser.AUTO,
     parent: 'phaser-example',
-    width: 800,
+    width: 600,
     height: 600,
     scene: MyGame
 };
