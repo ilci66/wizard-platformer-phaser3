@@ -23,8 +23,9 @@ class MyGame extends Phaser.Scene
         this.load.image('trees', bgImg);
         this.load.image('painting', paintingImg);
         this.load.image('sky', skyImg);
-        this.load.image('oakwood', oakwoodImg);
-        // this.load.tilemapTiledJSON('tilemap', 'assets/game.json')
+        
+        this.load.image('tiles', oakwoodImg);
+        this.load.tilemapTiledJSON('tilemap', gameJson)
         // this.load.tilemapImpact('tilemap', gameTmx)
     }
     
@@ -44,9 +45,11 @@ class MyGame extends Phaser.Scene
         // this.trees = this.add.tileSprite(0, 0, 800, 180, 'trees').setOrigin(0, 0);
         
         
-        // const map = this.make.tilemap({key: 'tilemap'})
-        // map.addTilesetImage('oakwood', 'oakwood')
+        const map = this.make.tilemap({key: 'tilemap'})
+        const tileset = map.addTilesetImage('oakwood', 'tiles')
 
+        map.createLayer('Tile Layer 1', tileset)
+        
         this.anims.create({
             key: 'idle',
             frames: this.anims.generateFrameNames('wizard', { prefix: 'idle00', start: 0, end: 5, suffix: '.png'}),
