@@ -60,8 +60,9 @@ class MyGame extends Phaser.Scene
             repeat: -1
         });
         this.cameras.main.scrollY = -120
-        var wizard = this.add.sprite(60, 250);
-        
+        var wizard = this.matter.add.sprite(60, 250);   
+        // wizard.setDisplaySize(40, 40)
+        // wizard.setDisplayOrigin(12, 2)
         wizard.play('idle')
     }
     update ()
