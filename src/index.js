@@ -1,4 +1,4 @@
-import Phaser from 'phaser';
+import Phaser, { Physics } from 'phaser';
 import logoImg from './assets/logo.png';
 import wizardImg from './assets/wizard.png';
 import wizardJson from './assets/wizard.json';
@@ -48,7 +48,10 @@ class MyGame extends Phaser.Scene
         const map = this.make.tilemap({key: 'tilemap'})
         const tileset = map.addTilesetImage('oakwood', 'tiles')
 
-        map.createLayer('Tile Layer 1', tileset)
+        const ground = map.createLayer('Tile Layer 1', tileset)
+        ground.setCollisionByProperty({ collides: true})
+        
+        this.matter.world.convertTilemapLayer(ground)
         
         this.anims.create({
             key: 'idle',
@@ -56,7 +59,9 @@ class MyGame extends Phaser.Scene
             frameRate: 8,
             repeat: -1
         });
-        var wizard = this.add.sprite(100, 100);
+        this.cameras.main.scrollY = -120
+        var wizard = this.add.sprite(60, 250);
+        
         wizard.play('idle')
     }
     update ()
@@ -68,9 +73,16 @@ class MyGame extends Phaser.Scene
 const config = {
     type: Phaser.AUTO,
     parent: 'phaser-example',
-    width: 600,
+    width: 1200,
     height: 600,
+    physics: {
+        default: 'matter',
+        matter: {
+            debug: true
+        }
+    },
     scene: MyGame
+    
 };
 
 const game = new Phaser.Game(config);
