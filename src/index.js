@@ -61,11 +61,11 @@ class MyGame extends Phaser.Scene
         });
         this.cameras.main.scrollY = -120
         var wizard = this.matter.add.sprite(60, 250);   
-        // wizard.setSizeToFrame() // this might work check later
-        wizard.setDisplaySize(70, 70)
-        wizard.setSize(40,40)
-        wizard.setScale(0.5)
-        // wizard.setDisplayOrigin(15, 21)
+        // wizard.setDisplaySize(70, 70)
+        // wizard.setSize(40,40)
+        wizard.setScale(0.7)
+        // wizard.setDisplayOrigin(15, 20)
+        wizard.setRectangle(50, 70)
         wizard.play('idle')
         
     }
