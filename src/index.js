@@ -16,6 +16,11 @@ class MyGame extends Phaser.Scene
         super();
     }
 
+    init()
+    {
+        this.cursors = this.input.keyboard.createCursorKeys()
+    }
+
     preload ()
     {
         // this.load.image('logo', logoImg);
@@ -59,6 +64,12 @@ class MyGame extends Phaser.Scene
             frameRate: 8,
             repeat: -1
         });
+        this.anims.create({
+            key: 'run-left',
+            frames: this.anims.generateFrameNames('wizard', { prefix: 'runleft00', start: 0, end: 7, suffix: '.png'}),
+            frameRate: 8,
+            repeat: -1
+        });
         this.cameras.main.scrollY = -120
         var wizard = this.matter.add.sprite(60, 250);   
         // wizard.setDisplaySize(70, 70)
@@ -71,7 +82,19 @@ class MyGame extends Phaser.Scene
     }
     update ()
     {
-        // background.tilePosition.x += 0.5; 
+        if (this.cursors.left.isDown){
+            console.log("left is down")
+            // wizard.play('run-left')
+        }
+        if (this.cursors.up.isDown){
+            console.log("up is down")
+        }
+        if (this.cursors.down.isDown){
+            console.log("down is down")
+        }
+        if (this.cursors.right.isDown){
+            console.log("right is down")
+        }
     }
 }
 
