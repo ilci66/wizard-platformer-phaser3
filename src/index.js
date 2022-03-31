@@ -7,109 +7,124 @@ import paintingImg from './assets/painting-dark-blue.jpg';
 import skyImg from './assets/dark-sky-game.png';
 import oakwoodImg from './assets/oakwood.png'
 import gameJson from './assets/game.json';
-// import gameTmx from './assets/game.tmx';
 
-class MyGame extends Phaser.Scene
-{
-    constructor ()
-    {
-        super();
-    }
+class MyGame extends Phaser.Scene {
+  // cursor;
+  constructor() {
+    super('game');
+  }
 
-    init()
-    {
-        this.cursors = this.input.keyboard.createCursorKeys()
-    }
+  init() {
+    this.cursors = this.input.keyboard.createCursorKeys()
+  }
 
-    preload ()
-    {
-        // this.load.image('logo', logoImg);
-        this.load.atlas('wizard', wizardImg, wizardJson);
-        this.load.image('trees', bgImg);
-        this.load.image('painting', paintingImg);
-        this.load.image('sky', skyImg);
-        
-        this.load.image('tiles', oakwoodImg);
-        this.load.tilemapTiledJSON('tilemap', gameJson)
-        // this.load.tilemapImpact('tilemap', gameTmx)
-    }
+  preload () {
+    this.load.atlas('wizard', wizardImg, wizardJson);
+    this.load.image('trees', bgImg);
+    this.load.image('painting', paintingImg);
+    this.load.image('sky', skyImg);
     
-    create ()
-    {   
-        // I was using the code above for my game but
-        // found this code online that strethes my background
-        // let background = this.add.image(this.cameras.main.width / 2, this.cameras.main.height / 2, 'bg')
-        // let scaleX = this.cameras.main.width / image.width
-        // let scaleY = this.cameras.main.height / image.height
-        // let scale = Math.max(scaleX, scaleY)
-        // image.setScale(scale).setScrollFactor(0)
+    this.load.image('tiles', oakwoodImg);
+    this.load.tilemapTiledJSON('tilemap', gameJson)
+  }
+  
+  create () {   
+    this.createWizardAnimation();
 
-        // let background = this.add.image(400, 16, 'bg').setOrigin(0, 0);
-        // let paintingBackground = this.add.image(0, 0, 'painting').setOrigin(0, 0);
-        // this.bg = this.add.tileSprite(0, 0, 800, 800, 'sky').setOrigin(0, 0);
-        // this.trees = this.add.tileSprite(0, 0, 800, 180, 'trees').setOrigin(0, 0);
-        
-        
-        const map = this.make.tilemap({key: 'tilemap'})
-        const tileset = map.addTilesetImage('oakwood', 'tiles')
+    const map = this.make.tilemap({key: 'tilemap'})
+    const tileset = map.addTilesetImage('oakwood', 'tiles')
 
-        const ground = map.createLayer('Tile Layer 1', tileset)
-        ground.setCollisionByProperty({ collides: true})
-        
-        this.matter.world.convertTilemapLayer(ground)
-        
-        this.anims.create({
-            key: 'idle',
-            frames: this.anims.generateFrameNames('wizard', { prefix: 'idle00', start: 0, end: 5, suffix: '.png'}),
-            frameRate: 8,
-            repeat: -1
-        });
-        this.anims.create({
-            key: 'run-left',
-            frames: this.anims.generateFrameNames('wizard', { prefix: 'runleft00', start: 0, end: 7, suffix: '.png'}),
-            frameRate: 8,
-            repeat: -1
-        });
-        this.cameras.main.scrollY = -120
-        var wizard = this.matter.add.sprite(60, 250);   
-        // wizard.setDisplaySize(70, 70)
-        // wizard.setSize(40,40)
-        wizard.setScale(0.7)
-        // wizard.setDisplayOrigin(15, 20)
-        wizard.setRectangle(50, 70)
-        wizard.play('idle')
-        
+    const ground = map.createLayer('Tile Layer 1', tileset)
+    ground.setCollisionByProperty({ collides: true})
+    
+    this.matter.world.convertTilemapLayer(ground)
+    
+    // this.anims.create({
+    //     key: 'idle',
+    //     frames: this.anims.generateFrameNames('wizard', { prefix: 'idle00', start: 0, end: 5, suffix: '.png'}),
+    //     frameRate: 8,
+    //     repeat: -1
+    // });
+    // this.anims.create({
+    //     key: 'run-left',
+    //     frames: this.anims.generateFrameNames('wizard', { prefix: 'runleft00', start: 0, end: 7, suffix: '.png'}),
+    //     frameRate: 8,
+    //     repeat: -1
+    // });
+    
+    this.cameras.main.scrollY = -120
+    
+    // var wizard = this.matter.add.sprite(60, 250);
+
+    // wizard.setFixedRotation()
+    // wizard.setScale(0.7)
+    // wizard.setRectangle(50, 70)
+    // wizard.play('idle')
+    this.wizard = this.matter.add.sprite(60, 250, 'wizard')
+      .setFixedRotation()
+      .setScale(0.7)
+      .setRectangle(50, 70)
+      .play('idle')
+  }
+
+  createWizardAnimation() {
+    this.anims.create({
+      key: 'idle',
+      frames: this.anims.generateFrameNames('wizard', { prefix: 'idle00', start: 0, end: 5, suffix: '.png'}),
+      frameRate: 8,
+      repeat: -1
+    });
+
+    this.anims.create({
+      key: 'run-left',
+      frames: this.anims.generateFrameNames('wizard', { prefix: 'runleft00', start: 0, end: 7, suffix: '.png'}),
+      frameRate: 8,
+      repeat: -1
+    });
+    this.anims.create({
+      key: 'run-right',
+      frames: this.anims.generateFrameNames('wizard', { prefix: 'run00', start: 0, end: 7, suffix: '.png'}),
+      frameRate: 8,
+      repeat: -1
+    });
+  }
+  update () {
+    const speed = 3;
+
+    if (this.cursors.left.isDown){
+      console.log("left is down")
+      this.wizard.play('run-left')
+      this.wizard.setVelocityX(-speed)
     }
-    update ()
-    {
-        if (this.cursors.left.isDown){
-            console.log("left is down")
-            // wizard.play('run-left')
-        }
-        if (this.cursors.up.isDown){
-            console.log("up is down")
-        }
-        if (this.cursors.down.isDown){
-            console.log("down is down")
-        }
-        if (this.cursors.right.isDown){
-            console.log("right is down")
-        }
+    else if (this.cursors.up.isDown){
+      console.log("up is down")
     }
+    else if (this.cursors.down.isDown){
+      console.log("down is down")
+    }
+    else if (this.cursors.right.isDown){
+      console.log("right is down")
+      this.wizard.play('run-right')
+      this.wizard.setVelocityX(speed)
+    }
+    else {
+      this.wizard.setVelocityX(0)
+    }
+  }
 }
 
 const config = {
-    type: Phaser.AUTO,
-    parent: 'phaser-example',
-    width: 600,
-    height: 600,
-    physics: {
-        default: 'matter',
-        matter: {
-            debug: true
-        }
-    },
-    scene: MyGame
+  type: Phaser.AUTO,
+  parent: 'phaser-example',
+  width: 600,
+  height: 600,
+  physics: {
+      default: 'matter',
+      matter: {
+          debug: true
+      }
+  },
+  scene: MyGame
     
 };
 
