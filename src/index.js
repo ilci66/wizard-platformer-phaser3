@@ -39,31 +39,14 @@ class MyGame extends Phaser.Scene {
     
     this.matter.world.convertTilemapLayer(ground)
     
-    // this.anims.create({
-    //     key: 'idle',
-    //     frames: this.anims.generateFrameNames('wizard', { prefix: 'idle00', start: 0, end: 5, suffix: '.png'}),
-    //     frameRate: 8,
-    //     repeat: -1
-    // });
-    // this.anims.create({
-    //     key: 'run-left',
-    //     frames: this.anims.generateFrameNames('wizard', { prefix: 'runleft00', start: 0, end: 7, suffix: '.png'}),
-    //     frameRate: 8,
-    //     repeat: -1
-    // });
-    
+
     this.cameras.main.scrollY = -120
     
-    // var wizard = this.matter.add.sprite(60, 250);
 
-    // wizard.setFixedRotation()
-    // wizard.setScale(0.7)
-    // wizard.setRectangle(50, 70)
-    // wizard.play('idle')
     this.wizard = this.matter.add.sprite(60, 250, 'wizard')
       .setFixedRotation()
       .setScale(0.7)
-      .setRectangle(50, 70)
+      .setRectangle(60, 70)
       .play('idle')
   }
 
@@ -89,7 +72,7 @@ class MyGame extends Phaser.Scene {
     });
   }
   update () {
-    const speed = 3;
+    const speed = 2;
 
     if (this.cursors.left.isDown){
       console.log("left is down")
@@ -98,6 +81,10 @@ class MyGame extends Phaser.Scene {
     }
     else if (this.cursors.up.isDown){
       console.log("up is down")
+      if(this.wizard.isTouchingGroud){
+
+        this.wizard.setVelocityY(-speed)
+      }
     }
     else if (this.cursors.down.isDown){
       console.log("down is down")
@@ -108,7 +95,8 @@ class MyGame extends Phaser.Scene {
       this.wizard.setVelocityX(speed)
     }
     else {
-      this.wizard.setVelocityX(0)
+      // this.wizard.setVelocityX(0)
+      // this.wizard.play('idle')
     }
   }
 }
@@ -119,10 +107,10 @@ const config = {
   width: 600,
   height: 600,
   physics: {
-      default: 'matter',
-      matter: {
-          debug: true
-      }
+    default: 'matter',
+    matter: {
+        debug: true
+    }
   },
   scene: MyGame
     
